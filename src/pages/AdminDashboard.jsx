@@ -1,42 +1,19 @@
 import React, { useState } from 'react';
+import TaskForm from '../components/TaskForm';
 
 const AdminDashboard = () => {
   const [tasks, setTasks] = useState([
-    { id: 1, title: 'Complete project proposal', status: 'In Progress', priority: 'High', dueDate: '2023-12-15', assignee: 'John Doe' },
-    { id: 2, title: 'Review marketing materials', status: 'Pending', priority: 'Medium', dueDate: '2023-12-20', assignee: 'Jane Smith' },
-    { id: 3, title: 'Update client documentation', status: 'Completed', priority: 'Low', dueDate: '2023-12-10', assignee: 'Mike Johnson' },
+    { id: 1, title: 'Complete project proposal', status: 'In Progress', priority: 'High', dueDate: '2023-12-15', assignedTo: 'John Doe' },
+    { id: 2, title: 'Review marketing materials', status: 'Pending', priority: 'Medium', dueDate: '2023-12-20', assignedTo: 'Jane Smith' },
+    { id: 3, title: 'Update client documentation', status: 'Completed', priority: 'Low', dueDate: '2023-12-10', assignedTo: 'Mike Johnson' },
   ]);
   
-  const [newTask, setNewTask] = useState({
-    title: '',
-    status: 'Pending',
-    priority: 'Medium',
-    dueDate: '',
-    assignee: ''
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewTask({
-      ...newTask,
-      [name]: value
-    });
-  };
-
-  const handleCreateTask = (e) => {
-    e.preventDefault();
+  const handleCreateTask = (newTaskData) => {
     const task = {
       id: tasks.length + 1,
-      ...newTask
+      ...newTaskData
     };
     setTasks([...tasks, task]);
-    setNewTask({
-      title: '',
-      status: 'Pending',
-      priority: 'Medium',
-      dueDate: '',
-      assignee: ''
-    });
   };
 
   const statusColors = {
@@ -76,83 +53,9 @@ const AdminDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Sidebar */}
+          {/* Sidebar with TaskForm */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">Create New Task</h2>
-              <form onSubmit={handleCreateTask}>
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Task Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={newTask.title}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                  <select
-                    name="status"
-                    value={newTask.status}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Completed">Completed</option>
-                  </select>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
-                  <select
-                    name="priority"
-                    value={newTask.priority}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
-                  <input
-                    type="date"
-                    name="dueDate"
-                    value={newTask.dueDate}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Assignee</label>
-                  <input
-                    type="text"
-                    name="assignee"
-                    value={newTask.assignee}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  Create Task
-                </button>
-              </form>
-            </div>
+            <TaskForm onCreateTask={handleCreateTask} />
           </div>
           
           {/* Main Content */}
@@ -171,7 +74,7 @@ const AdminDashboard = () => {
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assignee</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
@@ -193,7 +96,7 @@ const AdminDashboard = () => {
                           {task.dueDate}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {task.assignee}
+                          {task.assignedTo}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button className="text-blue-600 hover:text-blue-900 mr-3">Edit</button>
