@@ -6,8 +6,8 @@ import AppRouter from './router/AppRouter.jsx'
 import { AuthProvider } from "react-oidc-context"
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.eu-west-1.amazonaws.com/eu-west-1_i7lYBZUJR",
-  client_id: "272vrt8mvdjk22usqrrk78t1gl",
+  authority: "https://eu-west-1bsbiokmpb.auth.eu-west-1.amazoncognito.com",
+  client_id: "4f44616v62816066gvrdeon2ba",
   redirect_uri: "http://localhost:5174",
   response_type: "code",
   scope: "openid email profile",
