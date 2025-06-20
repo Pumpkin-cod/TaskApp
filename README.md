@@ -1,98 +1,29 @@
-# Task Management System
+# Task Management Frontend
 
-A modern web application for managing tasks efficiently with different user roles and interfaces.
+React-based frontend application for the Task Management System with admin and member dashboards.
 
 ## Features
 
-- **User Authentication**: Secure login for different user roles
-- **Admin Dashboard**: Create, manage, and assign tasks
-- **Member Dashboard**: View and update assigned tasks
-- **Task Management**: Create, update, and track tasks with priorities and deadlines
-- **Responsive Design**: Works on desktop and mobile devices
-
-##Live Links
-https://master.d255owujid3nor.amplifyapp.com/member/  ----Member dashboard
-https://master.d255owujid3nor.amplifyapp.com/admin/   ---- Admin
-
+- **Admin Dashboard**: Create, assign, and manage tasks
+- **Member Dashboard**: View and update personal tasks
+- **Task Form**: Reusable component for task creation
+- **Authentication**: AWS Cognito integration
+- **Responsive UI**: Tailwind CSS styling
 
 ## Tech Stack
 
-- **Frontend**: React, Tailwind CSS
-- **Build Tool**: Vite
-- **Authentication**: AWS Cognito (configured)
+- React 18
+- Vite (build tool)
+- Tailwind CSS
+- AWS Cognito (authentication)
+- React Router (navigation)
 
 ## Installation
 
-1. Clone the repository
 ```bash
-git clone <repository-url>
-cd Task\ Management
-```
-
-2. Install dependencies
-```bash
-cd frontend
+# Install dependencies
 npm install
-```
 
-3. Start the development server
-```bash
-npm run dev
-```
-
-## Routes
-
-- **Home Page**: `/` - Landing page with application overview
-- **Admin Dashboard**: `/admin` - Dashboard for administrators to manage tasks
-- **Member Dashboard**: `/member` - Dashboard for team members to view and update their tasks
-- **Tasks Page**: `/tasks` - Detailed task list view
-
-## Project Structure
-
-```
-frontend/
-├── src/
-│   ├── components/
-│   │   └── TaskForm.jsx       # Reusable task creation form
-│   ├── pages/
-│   │   ├── Homepage.jsx       # Landing page
-│   │   ├── AdminDashboard.jsx # Admin interface
-│   │   └── MemberDashboard.jsx # Member interface
-│   ├── router/
-│   │   └── AppRouter.jsx      # Application routing
-│   ├── App.jsx                # Main application component
-│   └── main.jsx               # Application entry point
-└── public/
-    └── ...                    # Static assets
-```
-
-## Usage
-
-### Admin Dashboard
-
-Administrators can:
-- Create new tasks with title, status, priority, due date, and assignee
-- View all tasks in the system
-- Edit or delete existing tasks
-- Monitor task statistics (total, pending, completed)
-
-Access at: `/admin`
-
-### Member Dashboard
-
-Team members can:
-- View tasks assigned to them
-- Update task status (Pending, In Progress, Completed)
-- Filter tasks by status and priority
-- View task statistics and upcoming deadlines
-
-Access at: `/member`
-
-## Development
-
-This project uses Vite for fast development with HMR (Hot Module Replacement).
-
-```bash
 # Start development server
 npm run dev
 
@@ -103,13 +34,76 @@ npm run build
 npm run preview
 ```
 
-## Customization
+## Project Structure
 
-The UI is built with Tailwind CSS, making it easy to customize:
+```
+src/
+├── components/
+│   └── TaskForm.jsx           # Reusable task creation form
+├── pages/
+│   ├── Homepage.jsx           # Landing page
+│   ├── AdminDashboard.jsx     # Admin interface
+│   └── MemberDashboard.jsx    # Member interface
+├── router/
+│   └── AppRouter.jsx          # Application routing
+├── App.jsx                    # Main app component
+└── main.jsx                   # Entry point
+```
 
-- Edit `tailwind.config.js` to modify theme colors and other design tokens
-- Component styles use Tailwind utility classes for easy modification
+## Routes
 
-## License
+- `/` - Homepage
+- `/admin` - Admin Dashboard
+- `/member` - Member Dashboard
+- `/tasks` - Task List
 
-[MIT](LICENSE)
+## Components
+
+### TaskForm
+Reusable form component for creating tasks with:
+- Task title
+- Status (Pending, In Progress, Completed)
+- Priority (Low, Medium, High)
+- Due date
+- Assigned to field
+
+### AdminDashboard
+- Task creation form
+- Task list with full CRUD operations
+- Task statistics
+- User management
+
+### MemberDashboard
+- Personal task view
+- Status update functionality
+- Task filtering
+- Activity timeline
+
+## Development
+
+```bash
+# Start dev server (localhost:5173)
+npm run dev
+
+# Build for production
+npm run build
+
+# Lint code
+npm run lint
+```
+
+## Environment Variables
+
+Create `.env` file:
+```
+VITE_COGNITO_DOMAIN=your-cognito-domain
+VITE_COGNITO_CLIENT_ID=your-client-id
+VITE_COGNITO_REDIRECT_URI=http://localhost:5173
+```
+
+## Deployment
+
+```bash
+npm run build
+# Deploy dist/ folder to your hosting service
+```
