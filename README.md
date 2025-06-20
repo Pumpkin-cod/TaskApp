@@ -10,6 +10,11 @@ A modern web application for managing tasks efficiently with different user role
 - **Task Management**: Create, update, and track tasks with priorities and deadlines
 - **Responsive Design**: Works on desktop and mobile devices
 
+##Live Links
+https://master.d255owujid3nor.amplifyapp.com/member/  ----Member dashboard
+https://master.d255owujid3nor.amplifyapp.com/admin/   ---- Admin
+
+
 ## Tech Stack
 
 - **Frontend**: React, Tailwind CSS
