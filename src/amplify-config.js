@@ -2,6 +2,7 @@
 import { Amplify } from 'aws-amplify';
 import Auth from '@aws-amplify/auth';
 
+
 const isLocalhost = window.location.hostname === "localhost";
 const redirectUri = isLocalhost
     ? "http://localhost:5174"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Auth } from "aws-amplify";
+import Auth from '@aws-amplify/auth'; 
 import AdminDashboard from "./AdminDashboard";
 import MemberDashboard from "./MemberDashboard";
 
