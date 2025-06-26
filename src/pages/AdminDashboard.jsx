@@ -1,20 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import TaskForm from '../components/TaskForm';
 
+const API_URL = "https://xya1ilgk82.execute-api.eu-west-1.amazonaws.com/Prod/task"; // replace with your actual API endpoint
+
 const AdminDashboard = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: 'Complete project proposal', status: 'In Progress', priority: 'High', dueDate: '2023-12-15', assignedTo: 'John Doe' },
-    { id: 2, title: 'Review marketing materials', status: 'Pending', priority: 'Medium', dueDate: '2023-12-20', assignedTo: 'Jane Smith' },
-    { id: 3, title: 'Update client documentation', status: 'Completed', priority: 'Low', dueDate: '2023-12-10', assignedTo: 'Mike Johnson' },
-  ]);
-  
-  const handleCreateTask = (newTaskData) => {
-    const task = {
-      id: tasks.length + 1,
-      ...newTaskData
-    };
-    setTasks([...tasks, task]);
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async () => {
+    try {
+      const token = localStorage.getItem('id_token'); // You must store this after login
+      const res = await axios.get(API_URL, {
+        headers: {
+          Authorization: token
+        }
+      });
+      setTasks(res.data);
+    } catch (err) {
+      console.error('Error fetching tasks:', err);
+    }
   };
+
+  const handleCreateTask = async (newTask) => {
+    try {
+      const token = localStorage.getItem('id_token');
+      const res = await axios.post(API_URL, newTask, {
+        headers: {
+          Authorization: token
+        }
+      });
+      setTasks(prev => [...prev, res.data]);
+    } catch (err) {
+      console.error('Error creating task:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const statusColors = {
     'Pending': 'bg-yellow-100 text-yellow-800',

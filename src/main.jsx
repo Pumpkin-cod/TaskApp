@@ -5,10 +5,15 @@ import { RouterProvider } from 'react-router-dom'
 import AppRouter from './router/AppRouter.jsx'
 import { AuthProvider } from "react-oidc-context"
 
+
+const isLocalhost = window.location.hostname === "localhost";
+
 const cognitoAuthConfig = {
-  authority: "https://eu-west-1bsbiokmpb.auth.eu-west-1.amazoncognito.com",
-  client_id: "4f44616v62816066gvrdeon2ba",
-  redirect_uri: "http://localhost:5174",
+  authority: "https://task.auth.eu-west-1.amazoncognito.com",
+  client_id: "272vrt8mvdjk22usqrrk78t1gl",
+  redirect_uri: isLocalhost
+    ? "http://localhost:5174"
+    : "https://master.d255owujid3nor.amplifyapp.com",
   response_type: "code",
   scope: "openid email profile",
   onSigninCallback: () => {
