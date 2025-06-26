@@ -1,40 +1,46 @@
-import { useAuth } from "react-oidc-context";
-
+import { useEffect, useState } from "react";
+import { Auth } from "aws-amplify";
 import AdminDashboard from "./AdminDashboard";
 import MemberDashboard from "./MemberDashboard";
 
-
 export default function HomePage() {
-  const auth = useAuth();
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  if (auth.isLoading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const currentUser = await Auth.currentAuthenticatedUser();
+        setUser(currentUser);
 
-  if (auth.error) {
-    return <div>Error: {auth.error.message}</div>;
-  }
+        const groups = currentUser.signInUserSession.accessToken.payload["cognito:groups"] || [];
+        setRole(groups.includes("admin") ? "admin" : "member");
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const isAuthenticated = auth.isAuthenticated;
-  const user = auth.user;
-  const groups = Array.isArray(user?.profile["cognito:groups"]) ? user.profile["cognito:groups"] : [];
-  const role = groups.includes("admin") ? "admin" : "member";
+    loadUser();
+  }, []);
 
-  // Sign-out redirect URL for Cognito logout
-  const clientId = "272vrt8mvdjk22usqrrk78t1gl";
-  const logoutUri = "http://localhost:5174"; // Match redirect_uri configured in Cognito
-  const cognitoDomain = "https://task.auth.eu-west-1.amazoncognito.com";
-
-  const signOutRedirect = () => {
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  const signIn = () => {
+    Auth.federatedSignIn(); // redirect to Cognito Hosted UI
   };
 
-  if (!isAuthenticated) {
-    // Not signed in — show login page
+  const signOut = () => {
+    Auth.signOut();
+  };
+
+  if (loading) return <div className="text-center mt-8">Loading...</div>;
+
+  if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
         <button
-          onClick={() => auth.signinRedirect()}
+          onClick={signIn}
           className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           Sign in with AWS
@@ -43,20 +49,19 @@ export default function HomePage() {
     );
   }
 
-  // Authenticated: render routes based on role or navigation UI here
   return (
     <div>
       <div className="p-4">
-        <p>Welcome, {user?.profile.email}</p>
-        <button onClick={() => auth.removeUser()}>Sign out (Local)</button>
-        <button onClick={signOutRedirect}>Sign out (Cognito)</button>
+        <p>Welcome, {user.attributes.email}</p>
+        <button
+          onClick={signOut}
+          className="mr-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Sign out
+        </button>
       </div>
 
-      {/* You can render routes here with conditional rendering or react-router <Routes> */}
-      {/* Example: */}
       {role === "admin" ? <AdminDashboard /> : <MemberDashboard />}
-
-      {/* For additional routes, you can use React Router <Routes> as in your old app */}
     </div>
   );
 }
