@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src 'self'; connect-src 'self' https://cognito-idp.eu-west-1.amazonaws.com https://taskapp.auth.eu-west-1.amazoncognito.com https://xya1ilgk82.execute-api.eu-west-1.amazonaws.com;
+Content-Security-Policy: default-src 'self'; connect-src 'self' https://cognito-idp.eu-west-1.amazonaws.com https://taskapp.auth.eu-west-1.amazoncognito.com https://xya1ilgk82.execute-api.eu-west-1.amazonaws.com;
